@@ -1,0 +1,1 @@
+C:\Users\Ryan\Google Drive\C#\QR Encode\QR Encode\bin\Debug\QR Encode.exe.config
