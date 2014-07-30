@@ -8,6 +8,8 @@ namespace QR_Encode
 {
     class DataEncode
     {
+        int encodeType = 0;
+
         Dictionary<String, short> AlphaNum = new Dictionary<String, short>();
 
         private void Alphanumeric()
@@ -60,15 +62,30 @@ namespace QR_Encode
             //That was pain staking. 
         }
 
-        private string EightBit(string Data)
+        private int EightBit(string Data)
         {
-            byte[] theBytes =  Encoding.UTF8.GetBytes(Data);
-            StringBuilder myEncoded = new StringBuilder();
-            foreach (byte everyBit in theBytes)
+            StringBuilder Pile = new StringBuilder();
+            char[] values = Data.ToCharArray();
+            foreach (char letter in values)
             {
-                myEncoded.Append(everyBit);
+                // Get the integral value of the character. 
+                int value = Convert.ToInt32(letter);
+                // Convert the decimal value to a hexadecimal value in string form. 
+                string hexOutput = String.Format("{0:X}", value);
+                Pile.Append(Convert.ToString(Convert.ToInt32(hexOutput, 16), 2));
             }
-            return myEncoded.ToString();
+            return Convert.ToInt16(Pile.ToString());
         }
+
+        private void EncodeType(string data)
+        {
+            if (data.All(Char.IsDigit))
+                encodeType = 0001;
+            else if (data.All(char.IsLetterOrDigit))
+                encodeType = 0010;
+            else
+                encodeType = 0100;
+        }
+
     }
 }
