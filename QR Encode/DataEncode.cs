@@ -8,10 +8,21 @@ namespace QR_Encode
 {
     class DataEncode
     {
-        int encodeType = 0;
-
         Dictionary<String, short> AlphaNum = new Dictionary<String, short>();
-
+        string encodedData;
+        private void dataEncoding(string theMessage)
+        {
+            switch (EncodeType(theMessage))
+            {
+                case 1: //Numeric Encoding
+                    break;
+                case 10: //AlphaNumeric Encoding
+                    break;
+                case 100: //8-bit byte type
+                    encodedData = EightBit(theMessage);
+                    break;
+            }
+        }
         private void Alphanumeric()
         {
             AlphaNum.Add("0", 0);
@@ -62,30 +73,50 @@ namespace QR_Encode
             //That was pain staking. 
         }
 
-        private int EightBit(string Data)
+        private string EightBit(string Data)
         {
+            //Concerts the string into hex, the binary then pads left if needed
             StringBuilder Pile = new StringBuilder();
             char[] values = Data.ToCharArray();
             foreach (char letter in values)
             {
-                // Get the integral value of the character. 
                 int value = Convert.ToInt32(letter);
-                // Convert the decimal value to a hexadecimal value in string form. 
                 string hexOutput = String.Format("{0:X}", value);
-                Pile.Append(Convert.ToString(Convert.ToInt32(hexOutput, 16), 2));
+                Pile.Append(Convert.ToString(Convert.ToInt32(hexOutput, 16), 2).PadLeft(8, '0'));
             }
-            return Convert.ToInt16(Pile.ToString());
+            return Pile.ToString();
         }
 
-        private void EncodeType(string data)
+        private int EncodeType(string data)
         {
             if (data.All(Char.IsDigit))
-                encodeType = 0001;
-            else if (data.All(char.IsLetterOrDigit))
-                encodeType = 0010;
+                return 1; //Numeric
+            else if (alphaCheck(data))
+                return 10; //AlphaNumeric
             else
-                encodeType = 0100;
+                return 100; //8-bit byte type
         }
 
+        private bool alphaCheck(string theInput)
+        {
+            //Gets string and checks if it meets the needs of alphanumeric
+            //Probably more efficent ways
+            bool checkThis = true;
+            string alphaCheck = "ABCDEFGHIJKLMNOPQRSTUVWXYZ$%*+-./: ";
+            foreach (char letters in theInput)
+            {
+                foreach (char lets in alphaCheck)
+                {
+                    if (letters.Equals(lets))
+                    {
+                        checkThis = true;
+                        break;
+                    }
+                    else if (!letters.Equals(lets))
+                        checkThis = false;
+                }
+            }
+            return checkThis;
+        }
     }
 }
