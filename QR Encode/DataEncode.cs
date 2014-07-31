@@ -23,6 +23,37 @@ namespace QR_Encode
                     break;
             }
         }
+
+        private string AlphaNumericEncode(string theInput)
+        {
+            //Load all the chars into dictionary
+            Alphanumeric();
+            List<string> choppedData = DataintoTwo(theInput);
+            StringBuilder intValues = new StringBuilder();
+            for (int x = 0; x < choppedData.Count; x++)
+            {
+                char[] pair = choppedData[x].ToCharArray();
+
+                if (AlphaNum.ContainsKey(pair[x].ToString()))
+                    intValues.Append(AlphaNum[pair[x].ToString()]);
+            }
+
+                return "False"; //Error 
+        }
+
+        //Cuts the data into 2 no matter string size
+        private List<string> DataintoTwo(string Sentence)
+        {
+            List<string> cutUp = new List<string>();
+            int chunkSize = 2;
+            for (int i = 0; i < Sentence.Length; i += chunkSize)
+            {
+                if (i + chunkSize > Sentence.Length) chunkSize = Sentence.Length - i;
+                cutUp.Add((Sentence.Substring(i, chunkSize)));
+            }
+            return cutUp;
+        }
+
         private void Alphanumeric()
         {
             AlphaNum.Add("0", 0);
