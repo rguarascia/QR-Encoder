@@ -24,11 +24,12 @@ namespace QR_Encode
             }
         }
 
+        //Finished
         private string AlphaNumericEncode(string theInput)
         {
             //Load all the chars into dictionary
             Alphanumeric();
-            List<string> choppedData = DataintoTwo(theInput);
+            List<string> choppedData = DataintoTwo(theInput, 2);
             StringBuilder intValues = new StringBuilder();
 
             for (int placement = 0; placement < choppedData.Count; placement++)
@@ -53,10 +54,9 @@ namespace QR_Encode
         }
 
         //Cuts the data into 2 no matter string size
-        private List<string> DataintoTwo(string Sentence)
+        private List<string> DataintoTwo(string Sentence, int chunkSize)
         {
             List<string> cutUp = new List<string>();
-            int chunkSize = 2;
             for (int i = 0; i < Sentence.Length; i += chunkSize)
             {
                 if (i + chunkSize > Sentence.Length) chunkSize = Sentence.Length - i;
@@ -115,6 +115,7 @@ namespace QR_Encode
             //That was pain staking. 
         }
 
+        //Finished
         private string EightBit(string Data)
         {
             //Concerts the string into hex, the binary then pads left if needed
@@ -159,6 +160,18 @@ namespace QR_Encode
                 }
             }
             return checkThis;
+        }
+
+        private string NumericEncoding(string data)
+        {
+            StringBuilder total = new StringBuilder();
+            List<string> numericValues = DataintoTwo(data, 3);
+            for (int x = 0; x < numericValues.Count; x++)
+            {
+                total.Append(Convert.ToString((Convert.ToInt16(numericValues[x])), 2));
+                total.Append(" ");
+            }
+            return total.ToString();
         }
     }
 }
