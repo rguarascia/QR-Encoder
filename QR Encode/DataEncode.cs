@@ -15,13 +15,18 @@ namespace QR_Encode
             switch (EncodeType(theMessage))
             {
                 case 1: //Numeric Encoding
+                    encodedData =  NumericEncoding(theMessage);
                     break;
                 case 10: //AlphaNumeric Encoding
+                    encodedData =  AlphaNumericEncode(theMessage);
                     break;
                 case 100: //8-bit byte type
-                    encodedData = EightBit(theMessage);
                     break;
+                    encodedData =  EightBit(theMessage);
             }
+
+
+
         }
 
         //Finished
@@ -53,9 +58,10 @@ namespace QR_Encode
                 return intValues.ToString();
         }
 
-        //Cuts the data into 2 no matter string size
+        
         private List<string> DataintoTwo(string Sentence, int chunkSize)
         {
+            //Cuts input into whatever size needed
             List<string> cutUp = new List<string>();
             for (int i = 0; i < Sentence.Length; i += chunkSize)
             {
@@ -161,7 +167,7 @@ namespace QR_Encode
             }
             return checkThis;
         }
-
+        //Finished
         private string NumericEncoding(string data)
         {
             StringBuilder total = new StringBuilder();
