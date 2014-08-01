@@ -30,15 +30,26 @@ namespace QR_Encode
             Alphanumeric();
             List<string> choppedData = DataintoTwo(theInput);
             StringBuilder intValues = new StringBuilder();
-            for (int x = 0; x < choppedData.Count; x++)
+
+            for (int placement = 0; placement < choppedData.Count; placement++)
             {
-                char[] pair = choppedData[x].ToCharArray();
+                char[] cutUp = choppedData[placement].ToCharArray();
+                int tempOne = 0;
+                int tempTwo = 0;
+                if (AlphaNum.ContainsKey(cutUp[0].ToString()))
+                    tempOne = AlphaNum[cutUp[0].ToString()];
+                if (cutUp.Length >= 2)
+                {
+                    if (AlphaNum.ContainsKey(cutUp[1].ToString()))
+                        tempTwo = AlphaNum[cutUp[1].ToString()];
+                    intValues.Append(Convert.ToString(Convert.ToInt16((tempOne * 45) + tempTwo), 2).PadLeft(11, '0'));
+                }
+                else
+                    intValues.Append(Convert.ToString(tempOne, 2).PadLeft(6, '0'));
 
-                if (AlphaNum.ContainsKey(pair[x].ToString()))
-                    intValues.Append(AlphaNum[pair[x].ToString()]);
+                intValues.Append(" ");
             }
-
-                return "False"; //Error 
+                return intValues.ToString();
         }
 
         //Cuts the data into 2 no matter string size
