@@ -24,9 +24,6 @@ namespace QR_Encode
                     break;
                     encodedData =  EightBit(theMessage);
             }
-
-
-
         }
 
         //Finished
