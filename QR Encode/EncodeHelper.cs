@@ -11,7 +11,10 @@ namespace QR_Encode
         int errorCorrection;
         public int versionIdenifier(int encodingType, int lengthMessage)
         {
-
+            /*Finds the lowest error correction for the length and type of input
+             * max is: Numeric: 255, Alphanumeric: 224, and 8-byte: 271
+             * 1 = Low, 2 = Medium, 3 = Quality, 4 = High
+            */  
             switch (encodingType)
             {
                 //Numeric
@@ -135,6 +138,7 @@ namespace QR_Encode
                         return 7;
                     }
                     return 42; //Error D:
+
                 //8-bit byte 
                 case 100:
                     if (lengthMessage <= 17)
@@ -209,18 +213,23 @@ namespace QR_Encode
                     else if (lengthMessage <= 230)
                     {
                         //Version Nine
-                        errorCorrection = 1;
+                        errorCorrection = 1; //Low
                         return 9;
                     }
                     else if (lengthMessage <= 271)
                     {
                         //Version Ten
-                        errorCorrection = 1;
+                        errorCorrection = 1; //Low
                         return 10;
                     }
-                    return 42;
+                    return 42; //I got problems
             }
             return 50; //Another ERROR ?:(
+        }
+
+        public int GetErrorCorrection()
+        {
+            return errorCorrection;
         }
     }
 }

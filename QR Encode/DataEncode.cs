@@ -10,6 +10,9 @@ namespace QR_Encode
     {
         Dictionary<String, short> AlphaNum = new Dictionary<String, short>();
         string encodedData;
+        int version;
+        int correctLevel;
+        EncodeHelper QrHelper = new EncodeHelper();
         private void dataEncoding(string theMessage)
         {
             switch (EncodeType(theMessage))
@@ -21,9 +24,11 @@ namespace QR_Encode
                     encodedData =  AlphaNumericEncode(theMessage);
                     break;
                 case 100: //8-bit byte type
-                    break;
                     encodedData =  EightBit(theMessage);
+                    break;
             }
+           version = QrHelper.versionIdenifier(EncodeType(theMessage), theMessage.Length);
+           correctLevel = QrHelper.GetErrorCorrection(); //Must be called after or wil return null
         }
 
         //Finished
