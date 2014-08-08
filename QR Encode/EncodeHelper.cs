@@ -135,10 +135,90 @@ namespace QR_Encode
                         return 7;
                     }
                     return 42; //Error D:
-
                 //8-bit byte 
                 case 100:
-                    return 100;
+                    if (lengthMessage <= 17)
+                    {
+                        //Version One
+                        if (lengthMessage <= 7)
+                            errorCorrection = 4; //Low
+                        else if (lengthMessage <= 11)
+                            errorCorrection = 3; //Medium
+                        else if (lengthMessage <= 14)
+                            errorCorrection = 2; //Quality
+                        else
+                            errorCorrection = 1; //High
+                        return 1;
+                    }
+                    else if (lengthMessage <= 32)
+                    {
+                        //Version Two
+                        if (lengthMessage <= 20)
+                            errorCorrection = 3; //Quality
+                        else if (lengthMessage <= 26)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 2;
+                    }
+                    else if (lengthMessage <= 53)
+                    {
+                        //Version Three
+                        if (lengthMessage <= 42)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 3;
+                    }
+                    else if (lengthMessage <= 78)
+                    {
+                        //Version Four
+                        if (lengthMessage <= 62)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 4;
+                    }
+                    else if (lengthMessage <= 106)
+                    {
+                        //Version Five
+                        if (lengthMessage <= 84)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 5;
+                    }
+                    else if (lengthMessage <= 134)
+                    {
+                        //Version Six
+                        errorCorrection = 1; //Low
+                        return 6;
+                    }
+                    else if (lengthMessage <= 154)
+                    {
+                        //Version Seven
+                        errorCorrection = 1; //Low
+                        return 7;
+                    }
+                    else if (lengthMessage <= 192)
+                    {
+                        //Version Eight
+                        errorCorrection = 1; //Low
+                        return 8;
+                    }
+                    else if (lengthMessage <= 230)
+                    {
+                        //Version Nine
+                        errorCorrection = 1;
+                        return 9;
+                    }
+                    else if (lengthMessage <= 271)
+                    {
+                        //Version Ten
+                        errorCorrection = 1;
+                        return 10;
+                    }
+                    return 42;
             }
             return 50; //Another ERROR ?:(
         }
