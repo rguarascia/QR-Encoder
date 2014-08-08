@@ -229,7 +229,25 @@ namespace QR_Encode
 
         public int GetErrorCorrection()
         {
-            return errorCorrection;
+            //I realized that after i wrote the script to get the error correction, I gave them the wrong value so instead
+            //of fixing it, I just wrote a method to bypass it.
+            return correctFixer(errorCorrection);
+        }
+
+        private int correctFixer(int inCorrection)
+        {
+            switch (inCorrection)
+            {
+                case 1:
+                    return 1;
+                case 2:
+                    return 0;
+                case 3:
+                    return 3;
+                case 4:
+                    return 2;
+            }
+            return 1; //Error return though should never be called. If it is, I'm in doodoo
         }
     }
 }
