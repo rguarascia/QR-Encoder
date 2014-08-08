@@ -12,6 +12,9 @@ namespace QR_Encode
         string encodedData;
         int version;
         int correctLevel;
+        int[,] codewordIndex = {{ 9, 13, 16, 19 }, { 16, 22, 28, 34 }, { 26, 34, 44, 55 }, { 36, 48, 64, 80 }, 
+                               { 46, 62, 86, 108 }, { 60, 76, 108, 136 }, { 66, 88, 124, 156 }, { 86, 110, 154, 194 },
+                               { 100, 132, 182, 232 }, { 122, 154, 216, 274 }};
         EncodeHelper QrHelper = new EncodeHelper();
         private void dataEncoding(string theMessage)
         {
@@ -207,6 +210,29 @@ namespace QR_Encode
                 }
             }
             return "1"; //error return? I am guessing ?:o
+        }
+
+        public int getCodewordNum(int versionNum, int correctionNum)
+        {
+            return codewordIndex[versionNum - 1, errorLevelFix(correctionNum)];
+        }
+
+        //Shifts the error corrects to match the array index
+        private int errorLevelFix(int oldError)
+        {
+            switch (oldError)
+            {
+                case 1:
+                    return 3;
+                case 0:
+                    return 2;
+                case 3:
+                    return 1;
+                case 2:
+                    return 0;
+            }
+
+            return 42;
         }
     }
 }

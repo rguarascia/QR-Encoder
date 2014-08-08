@@ -14,7 +14,7 @@ namespace QR_Encode
             /*Finds the lowest error correction for the length and type of input
              * max is: Numeric: 255, Alphanumeric: 224, and 8-byte: 271
              * 1 = Low, 2 = Medium, 3 = Quality, 4 = High
-            */  
+            */
             switch (encodingType)
             {
                 //Numeric
@@ -232,6 +232,32 @@ namespace QR_Encode
             //I realized that after i wrote the script to get the error correction, I gave them the wrong value so instead
             //of fixing it, I just wrote a method to bypass it.
             return errorCorrection;
+        }
+
+        public string messagePadding(string inMessage, int versionNum, int correctionNum, int codewordNum)
+        {
+            string[] tempMessage = inMessage.Split(' ');
+            codewordNum *= 8; //Gets the ammount of bits nessesary 
+            int messageLength = inMessage.Replace(" ", null).Length;
+
+            int lastIndex = tempMessage.Length - 2;
+
+            if (messageLength - codewordNum <= 4)
+            {
+                tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(tempMessage[lastIndex].Length + 4, '0');
+            }
+            else if (messageLength - codewordNum >= 4)
+            {
+                tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(Math.Abs(messageLength - codewordNum), '0');
+            }
+
+            StringBuilder compiledData = new StringBuilder();
+
+            for (int x = 0; x < tempMessage.Length; x++)
+                compiledData.Append(tempMessage[x]);
+
+            return compiledData.ToString();
+
         }
     }
 }
