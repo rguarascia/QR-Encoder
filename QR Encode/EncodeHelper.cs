@@ -23,11 +23,11 @@ namespace QR_Encode
                     {
                         //Version One
                         if (lengthMessage <= 17)
-                            errorCorrection = 4; //Low
+                            errorCorrection = 2; //Low
                         else if (lengthMessage <= 27)
                             errorCorrection = 3; //Medium
                         else if (lengthMessage <= 34)
-                            errorCorrection = 2; //Quality
+                            errorCorrection = 0; //Quality
                         else
                             errorCorrection = 1; //High
                         return 1;
@@ -38,7 +38,7 @@ namespace QR_Encode
                         if (lengthMessage <= 48)
                             errorCorrection = 3; //Quality
                         else if (lengthMessage <= 63)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 2;
@@ -47,7 +47,7 @@ namespace QR_Encode
                     {
                         //Version Three
                         if (lengthMessage <= 101)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 3;
@@ -56,7 +56,7 @@ namespace QR_Encode
                     {
                         //Version Four
                         if (lengthMessage <= 149)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 4;
@@ -65,7 +65,7 @@ namespace QR_Encode
                     {
                         //Version Five
                         if (lengthMessage <= 202)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1;
                         return 5;
@@ -78,11 +78,11 @@ namespace QR_Encode
                     {
                         //Version One
                         if (lengthMessage <= 10)
-                            errorCorrection = 4; //Low
+                            errorCorrection = 2; //Low
                         else if (lengthMessage <= 16)
                             errorCorrection = 3; //Medium
                         else if (lengthMessage <= 20)
-                            errorCorrection = 2; //Quality
+                            errorCorrection = 0; //Quality
                         else
                             errorCorrection = 1; //High
                         return 1;
@@ -93,7 +93,7 @@ namespace QR_Encode
                         if (lengthMessage <= 29)
                             errorCorrection = 3; //Quality
                         else if (lengthMessage <= 38)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 2;
@@ -102,7 +102,7 @@ namespace QR_Encode
                     {
                         //Version Three
                         if (lengthMessage <= 61)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 3;
@@ -111,7 +111,7 @@ namespace QR_Encode
                     {
                         //Version Four
                         if (lengthMessage <= 96)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 4;
@@ -120,7 +120,7 @@ namespace QR_Encode
                     {
                         //Version Five
                         if (lengthMessage <= 122)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 5;
@@ -145,11 +145,11 @@ namespace QR_Encode
                     {
                         //Version One
                         if (lengthMessage <= 7)
-                            errorCorrection = 4; //Low
+                            errorCorrection = 2; //Low
                         else if (lengthMessage <= 11)
                             errorCorrection = 3; //Medium
                         else if (lengthMessage <= 14)
-                            errorCorrection = 2; //Quality
+                            errorCorrection = 0; //Quality
                         else
                             errorCorrection = 1; //High
                         return 1;
@@ -160,7 +160,7 @@ namespace QR_Encode
                         if (lengthMessage <= 20)
                             errorCorrection = 3; //Quality
                         else if (lengthMessage <= 26)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 2;
@@ -169,7 +169,7 @@ namespace QR_Encode
                     {
                         //Version Three
                         if (lengthMessage <= 42)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 3;
@@ -178,7 +178,7 @@ namespace QR_Encode
                     {
                         //Version Four
                         if (lengthMessage <= 62)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 4;
@@ -187,7 +187,7 @@ namespace QR_Encode
                     {
                         //Version Five
                         if (lengthMessage <= 84)
-                            errorCorrection = 2; //Medium
+                            errorCorrection = 0; //Medium
                         else
                             errorCorrection = 1; //Low
                         return 5;
@@ -231,23 +231,7 @@ namespace QR_Encode
         {
             //I realized that after i wrote the script to get the error correction, I gave them the wrong value so instead
             //of fixing it, I just wrote a method to bypass it.
-            return correctFixer(errorCorrection);
-        }
-
-        private int correctFixer(int inCorrection)
-        {
-            switch (inCorrection)
-            {
-                case 1:
-                    return 1;
-                case 2:
-                    return 0;
-                case 3:
-                    return 3;
-                case 4:
-                    return 2;
-            }
-            return 1; //Error return though should never be called. If it is, I'm in doodoo
+            return errorCorrection;
         }
     }
 }

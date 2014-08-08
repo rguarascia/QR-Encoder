@@ -12,9 +12,17 @@ namespace QR_Encode
 {
     public partial class frmMain : Form
     {
+        DataEncode dataEncoding = new DataEncode();
+        EncodeHelper qrHelper = new EncodeHelper();
         public frmMain()
         {
             InitializeComponent();
+        }
+
+        //This is an extremely absurd function name but it does do magic
+        public void doMagic()
+        {
+
         }
     }
 }

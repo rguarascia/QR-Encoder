@@ -18,17 +18,17 @@ namespace QR_Encode
             switch (EncodeType(theMessage))
             {
                 case 1: //Numeric Encoding
-                    encodedData =  NumericEncoding(theMessage);
+                    encodedData = NumericEncoding(theMessage);
                     break;
                 case 10: //AlphaNumeric Encoding
-                    encodedData =  AlphaNumericEncode(theMessage);
+                    encodedData = AlphaNumericEncode(theMessage);
                     break;
                 case 100: //8-bit byte type
-                    encodedData =  EightBit(theMessage);
+                    encodedData = EightBit(theMessage);
                     break;
             }
-           version = QrHelper.versionIdenifier(EncodeType(theMessage), theMessage.Length);
-           correctLevel = QrHelper.GetErrorCorrection(); //Must be called after or wil return null
+            version = QrHelper.versionIdenifier(EncodeType(theMessage), theMessage.Length);
+            correctLevel = QrHelper.GetErrorCorrection(); //Must be called after or wil return null
         }
 
         //Finished
@@ -37,7 +37,7 @@ namespace QR_Encode
             //Load all the chars into dictionary
             Alphanumeric();
             List<string> choppedData = DataintoTwo(theInput, 2);
-            StringBuilder intValues = new StringBuilder("0010 ");
+            StringBuilder intValues = new StringBuilder("0010 " + charCount(theInput.Length, 10, version) + " ");
 
             for (int placement = 0; placement < choppedData.Count; placement++)
             {
@@ -57,9 +57,9 @@ namespace QR_Encode
 
                 intValues.Append(" ");
             }
-                return intValues.ToString();
+            return intValues.ToString();
         }
-        
+
         private List<string> DataintoTwo(string Sentence, int chunkSize)
         {
             //Cuts input into whatever size needed
@@ -125,7 +125,7 @@ namespace QR_Encode
         private string EightBit(string Data)
         {
             //Concerts the string into hex, the binary then pads left if needed
-            StringBuilder Pile = new StringBuilder("0100 ");
+            StringBuilder Pile = new StringBuilder("0100 " + charCount(Data.Length, 100, version) + " ");
             char[] values = Data.ToCharArray();
             foreach (char letter in values)
             {
@@ -170,7 +170,7 @@ namespace QR_Encode
         //Finished
         private string NumericEncoding(string data)
         {
-            StringBuilder total = new StringBuilder("001 ");
+            StringBuilder total = new StringBuilder("001 " + charCount(data.Length, 1, version) + " ");
             List<string> numericValues = DataintoTwo(data, 3);
             for (int x = 0; x < numericValues.Count; x++)
             {
@@ -178,6 +178,35 @@ namespace QR_Encode
                 total.Append(" ");
             }
             return total.ToString();
+        }
+
+        private string charCount(int inputLength, int dataType, int versionNum)
+        {
+            if (versionNum <= 9)
+            {
+                switch (dataType)
+                {
+                    case 1:
+                        return Convert.ToString(inputLength, 2).PadLeft(10, '0');
+                    case 10:
+                        return Convert.ToString(inputLength, 2).PadLeft(9, '0');
+                    case 100:
+                        return Convert.ToString(inputLength, 2).PadLeft(8, '0');
+                }
+            }
+            else if (versionNum <= 26)
+            {
+                switch (dataType)
+                {
+                    case 1:
+                        return Convert.ToString(inputLength, 2).PadLeft(12, '0');
+                    case 10:
+                        return Convert.ToString(inputLength, 2).PadLeft(11, '0');
+                    case 100:
+                        return Convert.ToString(inputLength, 2).PadLeft(16, '0');
+                }
+            }
+            return "1"; //error return? I am guessing ?:o
         }
     }
 }
