@@ -1,0 +1,146 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace QR_Encode
+{
+    class EncodeHelper
+    {
+        int errorCorrection;
+        public int versionIdenifier(int encodingType, int lengthMessage)
+        {
+
+            switch (encodingType)
+            {
+                //Numeric
+                case 1:
+                    if (lengthMessage <= 41)
+                    {
+                        //Version One
+                        if (lengthMessage <= 17)
+                            errorCorrection = 4; //Low
+                        else if (lengthMessage <= 27)
+                            errorCorrection = 3; //Medium
+                        else if (lengthMessage <= 34)
+                            errorCorrection = 2; //Quality
+                        else
+                            errorCorrection = 1; //High
+                        return 1;
+                    }
+                    else if (lengthMessage <= 77)
+                    {
+                        //Version Two
+                        if (lengthMessage <= 48)
+                            errorCorrection = 3; //Quality
+                        else if (lengthMessage <= 63)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 2;
+                    }
+                    else if (lengthMessage <= 127)
+                    {
+                        //Version Three
+                        if (lengthMessage <= 101)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 3;
+                    }
+                    else if (lengthMessage <= 187)
+                    {
+                        //Version Four
+                        if (lengthMessage <= 149)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 4;
+                    }
+                    else if (lengthMessage <= 255)
+                    {
+                        //Version Five
+                        if (lengthMessage <= 202)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1;
+                        return 5;
+                    }
+                    return 42; //Error, I might need this, but probably not.
+
+                //AlphaNumeric
+                case 10:
+                    if (lengthMessage <= 25)
+                    {
+                        //Version One
+                        if (lengthMessage <= 10)
+                            errorCorrection = 4; //Low
+                        else if (lengthMessage <= 16)
+                            errorCorrection = 3; //Medium
+                        else if (lengthMessage <= 20)
+                            errorCorrection = 2; //Quality
+                        else
+                            errorCorrection = 1; //High
+                        return 1;
+                    }
+                    else if (lengthMessage <= 47)
+                    {
+                        //Version Two
+                        if (lengthMessage <= 29)
+                            errorCorrection = 3; //Quality
+                        else if (lengthMessage <= 38)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 2;
+                    }
+                    else if (lengthMessage <= 77)
+                    {
+                        //Version Three
+                        if (lengthMessage <= 61)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 3;
+                    }
+                    else if (lengthMessage <= 114)
+                    {
+                        //Version Four
+                        if (lengthMessage <= 96)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 4;
+                    }
+                    else if (lengthMessage <= 154)
+                    {
+                        //Version Five
+                        if (lengthMessage <= 122)
+                            errorCorrection = 2; //Medium
+                        else
+                            errorCorrection = 1; //Low
+                        return 5;
+                    }
+                    else if (lengthMessage <= 195)
+                    {
+                        //Version Six
+                        errorCorrection = 1; //Low
+                        return 6;
+                    }
+                    else if (lengthMessage <= 224)
+                    {
+                        //Version Seven
+                        errorCorrection = 1; //Low
+                        return 7;
+                    }
+                    return 42; //Error D:
+
+                //8-bit byte 
+                case 100:
+                    return 100;
+            }
+            return 50; //Another ERROR ?:(
+        }
+    }
+}
