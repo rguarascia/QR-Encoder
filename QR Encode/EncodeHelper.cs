@@ -234,7 +234,7 @@ namespace QR_Encode
             return errorCorrection;
         }
 
-        public string messagePadding(string inMessage, int versionNum, int correctionNum, int codewordNum)
+        public string messagePadding(string inMessage, int codewordNum)
         {
             string[] tempMessage = inMessage.Split(' ');
             codewordNum *= 8; //Gets the ammount of bits nessesary 
@@ -242,11 +242,13 @@ namespace QR_Encode
 
             int lastIndex = tempMessage.Length - 2;
 
-            if (messageLength - codewordNum <= 4)
+            Console.WriteLine(Math.Abs(messageLength - codewordNum));
+
+            if (Math.Abs(messageLength - codewordNum) >= 4)
             {
                 tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(tempMessage[lastIndex].Length + 4, '0');
             }
-            else if (messageLength - codewordNum >= 4)
+            else
             {
                 tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(Math.Abs(messageLength - codewordNum), '0');
             }
@@ -254,7 +256,10 @@ namespace QR_Encode
             StringBuilder compiledData = new StringBuilder();
 
             for (int x = 0; x < tempMessage.Length; x++)
+            {
                 compiledData.Append(tempMessage[x]);
+                compiledData.Append(" ");
+            }
 
             return compiledData.ToString();
 

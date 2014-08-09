@@ -32,6 +32,8 @@ namespace QR_Encode
             }
             version = QrHelper.versionIdenifier(EncodeType(theMessage), theMessage.Length);
             correctLevel = QrHelper.GetErrorCorrection(); //Must be called after or wil return null
+            //Add terminators bits.
+            encodedData = QrHelper.messagePadding(encodedData, codewordIndex[version - 1, errorLevelFix(correctLevel)]);
         }
 
         //Finished
