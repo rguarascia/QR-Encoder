@@ -229,40 +229,48 @@ namespace QR_Encode
 
         public int GetErrorCorrection()
         {
-            //I realized that after i wrote the script to get the error correction, I gave them the wrong value so instead
-            //of fixing it, I just wrote a method to bypass it.
             return errorCorrection;
         }
 
-        public string messagePadding(string inMessage, int codewordNum)
+        public string addPadding(string inMessage, int codewordNum)
         {
             string[] tempMessage = inMessage.Split(' ');
             codewordNum *= 8; //Gets the ammount of bits nessesary 
             int messageLength = inMessage.Replace(" ", null).Length;
-
+            StringBuilder compiledData = new StringBuilder();
+            //Adds Terminator Bytes
             int lastIndex = tempMessage.Length - 2;
 
-            Console.WriteLine(Math.Abs(messageLength - codewordNum));
-
             if (Math.Abs(messageLength - codewordNum) >= 4)
-            {
                 tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(tempMessage[lastIndex].Length + 4, '0');
-            }
             else
-            {
                 tempMessage[lastIndex] = tempMessage[lastIndex].PadRight(Math.Abs(messageLength - codewordNum), '0');
-            }
-
-            StringBuilder compiledData = new StringBuilder();
-
             for (int x = 0; x < tempMessage.Length; x++)
-            {
                 compiledData.Append(tempMessage[x]);
-                compiledData.Append(" ");
+            string theData = compiledData.ToString();
+            //Makes byes multiple of 8
+            int leftOver = theData.Length % 8;
+            leftOver = Math.Abs(8 - leftOver);
+            if (leftOver != 0)
+                theData = theData.PadRight(theData.Length + leftOver, '0');
+            int remainding = Math.Abs(codewordNum - theData.Length) / 8;
+            string[] padBytes = new string[] { "11101100", "00010001" };
+
+            bool flipFlop = true;
+            //Adds bytes if the message is still too short
+            if (remainding != 0)
+            {
+                for (int x = 0; x < remainding; x++)
+                {
+                    if (flipFlop)
+                        theData += padBytes[0];
+                    else
+                        theData += padBytes[1];
+
+                    flipFlop = !flipFlop;
+                }
             }
-
-            return compiledData.ToString();
-
+            return theData;
         }
     }
 }
