@@ -15,7 +15,10 @@ namespace QR_Encode
         int[,] codewordIndex = {{ 9, 13, 16, 19 }, { 16, 22, 28, 34 }, { 26, 34, 44, 55 }, { 36, 48, 64, 80 }, 
                                { 46, 62, 86, 108 }, { 60, 76, 108, 136 }, { 66, 88, 124, 156 }, { 86, 110, 154, 194 },
                                { 100, 132, 182, 232 }, { 122, 154, 216, 274 }};
+
         EncodeHelper QrHelper = new EncodeHelper();
+        ErrorCorrection errorCorrection = new ErrorCorrection();
+
         private void dataEncoding(string theMessage)
         {
             switch (EncodeType(theMessage))
@@ -34,6 +37,7 @@ namespace QR_Encode
             correctLevel = QrHelper.GetErrorCorrection(); //Must be called after or wil return null
             //Add terminators bits, make multiple of 8 and make fit the required codeword length
             encodedData = QrHelper.addPadding(encodedData, codewordIndex[version - 1, errorLevelFix(correctLevel)]);
+            encodedData = errorCorrection.codewordNum(encodedData, version, correctLevel);
         }
 
         //Finished
